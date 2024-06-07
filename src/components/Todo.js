@@ -24,13 +24,6 @@ const Todo = ({ todos, completeTodo, removeTodo, updateTodo, setIsEdit, isEdit, 
     return todos.filter(todo => todo.isComplete).length;
   };
 
-  // Total number of todos
-  const totalTodos = todos.length;
-
-  // if (edit.id) {
-  //   return <TodoForm edit={edit} onSubmit={submitUpdate} />;
-  // }
-
   const editTodo = todo => {
     setIsEdit(true);
     setEditInput(todo);
