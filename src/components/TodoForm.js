@@ -1,26 +1,35 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 
 function TodoForm(props) {
-  console.log('props', props);
-  const [input, setInput] = useState(props.edit ? props.edit.value : '');
+  // console.log('props', props);
+  const { submitAdd, submitEdit, isEdit, editTodo } = props;
+  const [input, setInput] = useState("");
 
-  const handleChange = (e) => {
+  useEffect(() => {
+    if (isEdit) {
+      setInput(editTodo.title);
+    }
+  }, [isEdit]);
+
+  const handleChange = e => {
     setInput(e.target.value);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmitAdd = e => {
+    // e.preventDefault();
+    submitAdd(input);
+    setInput("");
+  };
+  const handleSubmitEdit = e => {
+    // e.preventDefault();
 
-    props.onSubmit({
-      id: Math.floor(Math.random() * 10000),
-      text: input,
-    });
-    setInput('');
+    submitEdit(input, editTodo.id);
+    setInput("");
   };
 
   return (
-    <form onSubmit={handleSubmit} className="todo-form">
-      {props.edit ? (
+    <div className="todo-form">
+      {isEdit ? (
         <>
           <input
             placeholder="Update your item"
@@ -29,25 +38,19 @@ function TodoForm(props) {
             name="text"
             className="todo-input edit"
           />
-          <button onClick={handleSubmit} className="todo-button edit">
+          <button className="todo-button edit" onClick={handleSubmitEdit}>
             Update
           </button>
         </>
       ) : (
         <>
-          <input
-            placeholder="Add a todo"
-            value={input}
-            onChange={handleChange}
-            name="text"
-            className="todo-input"
-          />
-          <button onClick={handleSubmit} className="todo-button">
+          <input placeholder="Add a todo" value={input} onChange={handleChange} name="text" className="todo-input" />
+          <button className="todo-button" onClick={handleSubmitAdd}>
             Add
           </button>
         </>
       )}
-    </form>
+    </div>
   );
 }
 
